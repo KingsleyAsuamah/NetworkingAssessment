@@ -4,8 +4,12 @@ if ($connectTestResult.TcpTestSucceeded) {
     cmd.exe /C "cmdkey /add:`"dbsstudenttestdiag.file.core.windows.net`" /user:`"Azure\dbsstudenttestdiag`" /pass:`"1ZP7oJh76lN5KHVcYOIVn1l8FUMUJJUkwzLXuv2FwtuVjacgsnflEZ7PnsxuqHV5KpyHAowB0aqu/B26EONKQQ==`""
     # Mount the drive
     New-PSDrive -Name Z -PSProvider FileSystem -Root "\\dbsstudenttestdiag.file.core.windows.net\assessmentpracticals"-Persist
-} else {
+} else { 
     Write-Error -Message "Unable to reach the Azure storage account via port 445. Check to make sure your organization or ISP is not blocking port 445, or use Azure P2S VPN, Azure S2S VPN, or Express Route to tunnel SMB traffic over a different port."
 }
+
+
+
+
 
 
