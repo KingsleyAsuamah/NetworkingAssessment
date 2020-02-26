@@ -1,0 +1,76 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_KC4ActvDir_name": {
+            "defaultValue": "KC4ActvDir",
+            "type": "String"
+        },
+        "disks_KC4ActvDir_OsDisk_1_b9ee78f50b544a74b9d7ecd2ee88745b_externalid": {
+            "defaultValue": "/subscriptions/13d1ab60-9e4c-4595-8712-59ba443888c1/resourceGroups/DBSSTUDENTTEST/providers/Microsoft.Compute/disks/KC4ActvDir_OsDisk_1_b9ee78f50b544a74b9d7ecd2ee88745b",
+            "type": "String"
+        },
+        "networkInterfaces_kc4actvdir743_externalid": {
+            "defaultValue": "/subscriptions/13d1ab60-9e4c-4595-8712-59ba443888c1/resourceGroups/DBSstudentTest/providers/Microsoft.Network/networkInterfaces/kc4actvdir743",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-07-01",
+            "name": "[parameters('virtualMachines_KC4ActvDir_name')]",
+            "location": "northeurope",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B1ls"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2012-R2-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('virtualMachines_KC4ActvDir_name'), '_OsDisk_1_b9ee78f50b544a74b9d7ecd2ee88745b')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_KC4ActvDir_OsDisk_1_b9ee78f50b544a74b9d7ecd2ee88745b_externalid')]"
+                        },
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_KC4ActvDir_name')]",
+                    "adminUsername": "kessyasuamah",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_kc4actvdir743_externalid')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "https://dbsstudenttestdiag.blob.core.windows.net/"
+                    }
+                }
+            }
+        }
+    ]
+}
