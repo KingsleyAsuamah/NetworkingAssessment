@@ -1,0 +1,76 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_KESSYVM10527084_name": {
+            "defaultValue": "KESSYVM10527084",
+            "type": "String"
+        },
+        "disks_KESSYVM10527084_OsDisk_1_3724bf8988034af08586fcb4943ed237_externalid": {
+            "defaultValue": "/subscriptions/13d1ab60-9e4c-4595-8712-59ba443888c1/resourceGroups/DBSSTUDENTTEST/providers/Microsoft.Compute/disks/KESSYVM10527084_OsDisk_1_3724bf8988034af08586fcb4943ed237",
+            "type": "String"
+        },
+        "networkInterfaces_kessyvm10527084906_externalid": {
+            "defaultValue": "/subscriptions/13d1ab60-9e4c-4595-8712-59ba443888c1/resourceGroups/DBSstudentTest/providers/Microsoft.Network/networkInterfaces/kessyvm10527084906",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-07-01",
+            "name": "[parameters('virtualMachines_KESSYVM10527084_name')]",
+            "location": "northeurope",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B1s"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "18.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Linux",
+                        "name": "[concat(parameters('virtualMachines_KESSYVM10527084_name'), '_OsDisk_1_3724bf8988034af08586fcb4943ed237')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_KESSYVM10527084_OsDisk_1_3724bf8988034af08586fcb4943ed237_externalid')]"
+                        },
+                        "diskSizeGB": 30
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_KESSYVM10527084_name')]",
+                    "adminUsername": "kessyasuamah",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false,
+                        "provisionVMAgent": true
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_kessyvm10527084906_externalid')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "https://dbsstudenttestdiag.blob.core.windows.net/"
+                    }
+                }
+            }
+        }
+    ]
+}
